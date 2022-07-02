@@ -1,11 +1,12 @@
 import {Component} from "react";
 import {PostForm} from './postForm'
 import {PostView} from './postView'
+import {MODE_EDIT, MODE_VIEW} from "../consts";
+import {Row, Col} from "antd";
 
 const POSTS = "posts";
 const SETTINGS = "settings";
-const MODE_VIEW = "view";
-const MODE_EDIT = "edit";
+
 
 export class LeeContent extends Component {
 
@@ -18,10 +19,13 @@ export class LeeContent extends Component {
     }
 
     defaultPost = () => {
+        // 默认文章的属性
         return {
             mode: MODE_EDIT,
             fullTxt: "",
             title: "",
+            // 通过isNew， 确定文章是不是新增状态？
+            isNew: false,
         }
     }
 
@@ -31,6 +35,7 @@ export class LeeContent extends Component {
             activeTab: POSTS,
             posts: [this.defaultPost()],
         }
+        this.handleFormAction = this.handleFormAction.bind(this);
     }
 
 
@@ -42,40 +47,56 @@ export class LeeContent extends Component {
         return this.state.activeTab === POSTS
     }
 
-    handlePostChange = (index, prop, val) => {
+    handleFormAction(index, prop, val) {
         this.setState(preState => {
-            if (index > preState.length) return preState;
-            preState[index][prop] = val;
+            if (index > preState.posts.length) return preState;
+            if (!val || Object.keys(val).length === 0) return preState
+            // 没传递具体的属性时， 就是修改全部属性
+            if (!prop) {
+                preState.posts[index] = val
+            } else {
+                // 修改具体的某个属性
+                preState.posts[index][prop] = val;
+            }
             return preState;
         })
     }
 
-    renderData() {
+    renderOnePost(post, index) {
+        // 渲染单个文章
+        let ele;
+        if (post.mode === MODE_EDIT) {
+            ele = (<PostForm
+                title={post.title}
+                fullTxt={post.fullTxt}
+                idx={index}
+                isNew={post.isNew && post.mode === MODE_EDIT}
+                handleForm={this.handleFormAction.bind(this)}
+            />)
+        } else {
+            ele = (<PostView
+                key={index}
+                title={post.title}
+                fullTxt={post.fullTxt}
+            />)
+        }
+        return <Row gutter={[0, 20]} key={index}>
+            <Col span={24}>
+                {ele}
+            </Col>
+        </Row>
+    }
+
+    renderPosts() {
+        // 渲染所有文章
         if (this.isActiveSettings()) {
             return (<div>
                 nothing
             </div>)
         } else {
-            return (
-                <div>
-                    {this.state.posts.map((post, index) => {
-                        if (post.mode === MODE_EDIT) {
-                            return <PostForm
-                                key={index}
-                                title={post.title}
-                                fullTxt={post.fullTxt}
-                                idx={index}
-                                handleChange={this.handlePostChange}
-                            />
-                        } else {
-                            return <PostView/>
-                        }
-                    })}
-                </div>
-            )
+            return (<div>{this.state.posts.map((post, index) => this.renderOnePost(post, index))}</div>)
         }
     }
-
 
     render() {
         return (
@@ -94,7 +115,7 @@ export class LeeContent extends Component {
                     </div>
                 </div>
                 <div className="content">
-                    {this.renderData()}
+                    {this.renderPosts()}
                 </div>
             </div>
         );

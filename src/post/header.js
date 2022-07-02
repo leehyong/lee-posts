@@ -26,7 +26,7 @@ export class LeeHeader extends Component {
                 <div className="post">
                     <h1>Manage post</h1>
                     <div className="profile">
-                        <div className="left">
+                        <div className="bg-box left">
                             <div className="icon-box">
                                 <CheckOutlined className="check-icon"/>
                             </div>

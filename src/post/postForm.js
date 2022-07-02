@@ -1,8 +1,11 @@
 import {Component} from "react";
-import {Input} from 'antd';
+import {Input, message} from 'antd';
 import BraftEditor from 'braft-editor'
+import {MODE_EDIT, MODE_VIEW} from "../consts";
+
 // 引入编辑器样式
 import 'braft-editor/dist/index.css'
+import {CheckOutlined, CloseOutlined} from "@ant-design/icons";
 
 // 富文本编辑: https://www.yuque.com/braft-editor/be/gz44tn#bo49ph
 const CONTROLS = [
@@ -18,41 +21,102 @@ const CONTROLS = [
 export class PostForm extends Component {
     constructor(props) {
         super(props);
+        // this.editor =
+        this.state = {
+            title: (this.props.title || "").slice(0),
+            editor: BraftEditor.createEditorState(this.props.fullTxt),
+            isSubmitting: false,
+            isCancelling: false
+        };
     }
 
-    async componentDidMount() {
-        this.title = this.props.title;
-        this.editor = BraftEditor.createEditorState(this.props.fullTxt)
+    handleTitleChange = (e) => {
+        this.setState({title: e.target.value})
     }
-
-    handleTitleChange = () => {
-        console.log("props " + this.props)
+    handleSubmit = () => {
+        console.log(this.state)
         console.log(this.title)
-        this.props.handlePostChange(this.props.idx, "title", this.title)
+        if (this.state.isSubmitting) {
+            // 避免重复提交
+            message.error("正在提交中，请稍等...")
+            return;
+        }
+        const {title, editor} = this.state
+        if (!title) {
+            message.error("请输入文章标题")
+            return;
+        }
+        const {handleForm, idx} = this.props
+        this.setState({isSubmitting: true});
+        handleForm(idx, null, {title, fullTxt: editor.toHTML(), isNew: false, mode: MODE_VIEW})
+        this.setState({isSubmitting: false});
     }
-    handleTxtChange = () => {
-        console.log(this.props)
-        console.log(this.editor.toHTML())
-        this.props.handlePostChange(this.props.idx, "fullTxt", this.editor.toHTML())
+    handleCancel = () => {
+        if (this.state.isCancelling) {
+            // 避免重复取消
+            message.error("正在取消，请稍等...")
+            return;
+        }
+        const {handleForm, idx} = this.props
+        this.setState({isCancelling: true});
+        handleForm(idx, "mode", MODE_VIEW)
+        this.setState({isCancelling: false});
     }
 
+    renderAction() {
+        const actions = []
+        let opName = "Post"
+        let rightAction;
+        if (this.props.isNew) {
+            rightAction = (
+                <div className="right" key="right"/>
+            )
+        } else {
+            opName = "Save"
+            rightAction = (
+                <div className="right" key="right">
+                    <div className="action" onClick={this.handleCancel}>
+                        <CloseOutlined/>
+                        <span className="txt">Cancel</span>
+                    </div>
+                </div>
+            )
+        }
+        actions.push((
+            <div className="bg-box left" key="left">
+                <div className="action" onClick={this.handleSubmit}>
+                    <CheckOutlined className="check-icon"/>
+                    <span className="txt">{opName}</span>
+                </div>
+            </div>
+        ))
+        actions.push(rightAction);
+        return actions
+    }
+
+    // 渲染表单
     render() {
+        // console.log(this.props)
+        const {editor, title} = this.state
         return (
             <div className="post-form">
-                <Input value={this.title}
+                <Input value={title}
                        className="input"
+                       onChange={this.handleTitleChange}
                        placeholder="input post title"
-                       onChange={this.handleTitleChange}/>
+                />
                 <BraftEditor
-                    value={this.editor}
+                    value={editor}
                     controls={CONTROLS}
                     textAligns={["left", "center"]}
-                    // onChange={this.handleTxtChange}
                     className="editor"
-                    placeholder="text..."
+                    placeholder="text"
                     controlBarClassName="editor-bar"
-                    contentClassName = "editor-content"
+                    contentClassName="editor-content"
                 />
+                <div className="action-box">
+                    {this.renderAction()}
+                </div>
             </div>
 
         )

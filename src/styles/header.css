@@ -18,10 +18,8 @@
 .header .post .profile .left{
     width: 100px;
     height: 100px;
-    background: radial-gradient(84.9% 100% at 50% 0%, #8F00FF 0%, #532BC5 100%);
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
-    display: flex;
 }
 
 .header .post .profile .left .icon-box{
@@ -33,12 +31,7 @@
     display: flex;
 }
 
-.header .post .profile .left .icon-box .check-icon{
-    color: #8F00FF;
-    margin: auto auto;
-    font-weight: bolder;
-    font-size: 30px;
-}
+
 .header .post .profile .right{
     display: flex;
     padding: 20px 20px;
