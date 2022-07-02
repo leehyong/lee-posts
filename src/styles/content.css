@@ -1,0 +1,48 @@
+.lee-tabs{
+   margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    height: 41px;
+}
+.lee-tabs .settings{
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.lee-tabs .posts{
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.lee-tabs >div{
+    display: flex;
+    flex: 1;
+    cursor: pointer;
+}
+
+.lee-tabs div.txt{
+    text-align: center;
+    margin: auto auto;
+}
+
+.lee-tabs div.txt .num{
+    text-align: center;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    margin-left: 4px;
+    background-color: white;
+    color: #8F00FF;
+    border-radius: 10px;
+}
+
+.lee-tabs .active{
+    background: #532BC5;
+    color: white;
+}
+.lee-tabs .unactive{
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.15);
+}
+.content{
+    margin-top: 30px;
+}

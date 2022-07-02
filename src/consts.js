@@ -1,0 +1,1 @@
+export const  iconColor = '#8F00FF';

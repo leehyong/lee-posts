@@ -1,0 +1,11 @@
+#root{
+    background-color: #F5F5F5;
+}
+.App {
+    /*text-align: center;*/
+    width: 800px;
+    margin: 0 auto 0;
+    padding: 30px;
+    height: 100vh;
+    background-color: white;
+}
