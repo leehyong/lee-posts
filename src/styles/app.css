@@ -6,7 +6,7 @@
     width: 800px;
     margin: 0 auto 0;
     padding: 30px;
-    height: 100vh;
+    /*height: 100vh;*/
     background-color: white;
 }
 
@@ -17,8 +17,10 @@
 }
 
 .check-icon{
-    color: #8F00FF;
     margin: auto auto;
     font-weight: bolder;
     font-size: 30px;
 }
+
+
+

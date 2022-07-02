@@ -25,7 +25,25 @@ export class LeeContent extends Component {
             fullTxt: "",
             title: "",
             // 通过isNew， 确定文章是不是新增状态？
+            isNew: true,
+            // 创建时间
+            createTime:null,
+            // 更新时间
+            updateTime:null,
+        }
+    }
+    viewPost = () => {
+        // 默认文章的属性
+        return {
+            mode: MODE_VIEW,
+            fullTxt: "dadwqeq",
+            title: "三大大大大",
+            // 通过isNew， 确定文章是不是新增状态？
             isNew: false,
+            // 创建时间
+            createTime:new Date(),
+            // 更新时间
+            updateTime:new Date(),
         }
     }
 
@@ -33,7 +51,7 @@ export class LeeContent extends Component {
         super(props);
         this.state = {
             activeTab: POSTS,
-            posts: [this.defaultPost()],
+            posts: [this.defaultPost(), this.viewPost(), this.viewPost()],
         }
         this.handleFormAction = this.handleFormAction.bind(this);
     }
@@ -80,7 +98,7 @@ export class LeeContent extends Component {
                 fullTxt={post.fullTxt}
             />)
         }
-        return <Row gutter={[0, 20]} key={index}>
+        return <Row key={index} style={{marginBottom:50}}>
             <Col span={24}>
                 {ele}
             </Col>
