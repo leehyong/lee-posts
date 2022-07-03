@@ -30,6 +30,9 @@ export class PostForm extends Component {
         };
     }
 
+    handleEditorChange = (editorState) => {
+        this.setState({ editor:editorState})
+    }
     handleTitleChange = (e) => {
         this.setState({title: e.target.value})
     }
@@ -58,7 +61,6 @@ export class PostForm extends Component {
             data["createTime"] = now;
         }
         handleForm(idx, null, data)
-        console.log(data)
         this.setState({isSubmitting: false});
     }
     handleCancel = () => {
@@ -121,6 +123,8 @@ export class PostForm extends Component {
                     textAligns={["left", "center"]}
                     className="editor"
                     placeholder="text"
+                    onChange={this.handleEditorChange}
+                    onSave={this.handleSubmit}
                     controlBarClassName="editor-bar"
                     contentClassName="editor-content"
                 />
