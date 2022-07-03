@@ -3,7 +3,7 @@ import {PostForm} from './postForm'
 import {PostView} from './postView'
 import {MODE_EDIT, MODE_VIEW} from "../consts";
 import {nowStr} from "../util";
-import {Row, Col} from "antd";
+import {Row, Col, message} from "antd";
 const POSTS = "posts";
 const SETTINGS = "settings";
 
@@ -74,6 +74,14 @@ export class LeeContent extends Component {
             return preState;
         })
     }
+    // 删除index对应的某个文章
+    cancelPost = (index)=>{
+        this.setState(preState =>{
+            if (index >= preState.posts.length) return preState;
+            preState.posts[index].mode = MODE_VIEW;
+            return preState;
+        })
+    }
     // 编辑index对应的某个文章
     editPost = (index)=>{
         this.setState(preState =>{
@@ -91,6 +99,8 @@ export class LeeContent extends Component {
             if (val === null || val === undefined) return preState;
             else if (typeof val === "object" && Object.keys(val).length === 0) return preState;
             // 没传递具体的属性时， 就是修改全部属性
+            const isNew = preState.posts[index].isNew
+            const isEditMode = preState.posts[index].mode === MODE_EDIT
             if (!prop) {
                 preState.posts[index] = val
             } else {
@@ -102,6 +112,9 @@ export class LeeContent extends Component {
                 preState.posts.unshift(this.defaultPost());
                 // 需要清空表单数据
                 clear && clear();
+            }
+            if (isEditMode){
+                message.info(`${isNew?'新增':'修改'}成功`);
             }
             return preState;
         })
@@ -118,6 +131,7 @@ export class LeeContent extends Component {
                 idx={index}
                 isNew={post.isNew && post.mode === MODE_EDIT}
                 handleForm={this.handleFormAction.bind(this)}
+                cancelPost={this.cancelPost}
             />)
         } else {
             ele = (<PostView

@@ -81,9 +81,9 @@ export class PostForm extends Component {
             message.error("正在取消，请稍等...")
             return;
         }
-        const {handleForm, idx} = this.props
+        const {cancelPost, idx} = this.props
         this.setState({isCancelling: true});
-        handleForm(idx, "mode", MODE_VIEW)
+        cancelPost(idx)
         this.setState({isCancelling: false});
     }
 
