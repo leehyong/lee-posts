@@ -16,6 +16,7 @@ const CONTROLS = [
     'link', 'separator',
     'media',
 ]
+const createEditorState = (content) => BraftEditor.createEditorState(content)
 
 // 文章表单， 用于编辑
 export class PostForm extends Component {
@@ -23,13 +24,12 @@ export class PostForm extends Component {
         super(props);
         this.state = {
             title: this.props.title || "",
-            editor: this.createEditorState(this.props.fullTxt),
+            editor: createEditorState(this.props.fullTxt),
             isSubmitting: false,
             isCancelling: false
         };
     }
 
-    createEditorState = (content) => BraftEditor.createEditorState(content)
 
     handleEditorChange = (editorState) => {
         this.setState({editor: editorState})
@@ -39,10 +39,9 @@ export class PostForm extends Component {
     }
     clearData = () => {
         // 清空富文本编辑器的内容
-        new BraftEditor(this.state.editor).clearEditorContent()
         this.setState({
             title: "",
-            editor: this.createEditorState(null),
+            editor: createEditorState(null),
             isSubmitting: false,
             isCancelling: false
         })
@@ -100,7 +99,7 @@ export class PostForm extends Component {
             rightAction = (
                 <div className="right" key="right">
                     <div className="action" onClick={this.handleCancel}>
-                        <CloseOutlined/>
+                        <CloseOutlined className="cancel"/>
                         <span className="txt">Cancel</span>
                     </div>
                 </div>
