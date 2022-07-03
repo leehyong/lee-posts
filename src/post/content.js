@@ -68,7 +68,9 @@ export class LeeContent extends Component {
     handleFormAction(index, prop, val) {
         this.setState(preState => {
             if (index > preState.posts.length) return preState;
-            if (!val || Object.keys(val).length === 0) return preState
+            // 不用 !val 判定， 避免val 为false的情况
+            if (val === null || val === undefined) return preState;
+            else if (typeof val === "object" && Object.keys(val).length === 0) return preState;
             // 没传递具体的属性时， 就是修改全部属性
             if (!prop) {
                 preState.posts[index] = val
