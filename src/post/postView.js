@@ -7,10 +7,9 @@ export class PostView extends PureComponent {
 
     renderHeader() {
         // 渲染文章标题
-        const post = this.props.post;
         return (
             <div className="header">
-                <div className="title bg-box">{post.title}</div>
+                <div className="title bg-box">{this.props.title}</div>
                 <div className="line-box">
                     <div className="line"/>
                 </div>
@@ -35,11 +34,10 @@ export class PostView extends PureComponent {
 
     renderContent() {
         // 渲染文章内容
-        const post = this.props.post;
         return (
             <div className="content-box">
-                <div className="content" dangerouslySetInnerHTML={{__html: post.fullTxt}}/>
-                <div className="date">{post.updateTime}</div>
+                <div className="content" dangerouslySetInnerHTML={{__html: this.props.fullTxt}}/>
+                <div className="date">{this.props.updateTime}</div>
             </div>
         )
     }
@@ -57,8 +55,7 @@ export class PostView extends PureComponent {
 PostView.propTypes = {
     editPost: PropTypes.func.isRequired,
     deletePost: PropTypes.func.isRequired,
-    post: PropTypes.shape({
-        title: PropTypes.string.isRequired,
-        fullTxt: PropTypes.string.isRequired
-    })
+    title: PropTypes.string.isRequired,
+    fullTxt: PropTypes.string.isRequired,
+    updateTime: PropTypes.string.isRequired,
 }

@@ -137,7 +137,9 @@ export class LeeContent extends Component {
             ele = (<PostView
                 key={index}
                 idx={index}
-                post={post}
+                title={post.title}
+                fullTxt={post.fullTxt}
+                updateTime={post.updateTime}
                 deletePost={this.deletePost}
                 editPost={this.editPost}
             />)
