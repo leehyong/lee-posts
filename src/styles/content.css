@@ -102,13 +102,13 @@ tab 切换页的样式 --- end
 .action-box .left {
     flex: 1;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .action-box .left .action {
     margin: auto auto;
     color: white;
     text-align: center;
-    cursor: pointer;
 }
 
 .action-box .left .action .check-icon {
@@ -228,4 +228,15 @@ tab 切换页的样式 --- end
 
 .view-box .header .op-box .box .delete .inner-delete{
     margin: auto auto;
+}
+
+.view-box .content-box {
+ padding: 0 12px;
+}
+.view-box .content-box .date{
+    text-align: left;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    color: #818181;
 }

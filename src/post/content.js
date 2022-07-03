@@ -2,8 +2,8 @@ import {Component} from "react";
 import {PostForm} from './postForm'
 import {PostView} from './postView'
 import {MODE_EDIT, MODE_VIEW} from "../consts";
+import {nowStr} from "../util";
 import {Row, Col} from "antd";
-
 const POSTS = "posts";
 const SETTINGS = "settings";
 
@@ -34,6 +34,7 @@ export class LeeContent extends Component {
     }
     viewPost = () => {
         // 默认文章的属性
+        const now = nowStr();
         return {
             mode: MODE_VIEW,
             fullTxt: "dadwqeq",
@@ -41,9 +42,9 @@ export class LeeContent extends Component {
             // 通过isNew， 确定文章是不是新增状态？
             isNew: false,
             // 创建时间
-            createTime:new Date(),
+            createTime:now,
             // 更新时间
-            updateTime:new Date(),
+            updateTime:now,
         }
     }
 
@@ -58,16 +59,34 @@ export class LeeContent extends Component {
 
 
     isActiveSettings() {
-        return this.state.activeTab === SETTINGS
+        return this.state.activeTab === SETTINGS;
     }
 
     isActivePosts() {
-        return this.state.activeTab === POSTS
+        return this.state.activeTab === POSTS;
     }
 
+    // 删除index对应的某个文章
+    deletePost = (index)=>{
+        this.setState(preState =>{
+            if (index >= preState.posts.length) return preState;
+            preState.posts.splice(index, 1);
+            return preState;
+        })
+    }
+    // 编辑index对应的某个文章
+    editPost = (index)=>{
+        this.setState(preState =>{
+            if (index >= preState.posts.length) return preState;
+            preState.posts[index].mode = MODE_EDIT;
+            return preState;
+        })
+    }
+
+    // 修改单个文章的信息
     handleFormAction(index, prop, val) {
         this.setState(preState => {
-            if (index > preState.posts.length) return preState;
+            if (index >= preState.posts.length) return preState;
             // 不用 !val 判定， 避免val 为false的情况
             if (val === null || val === undefined) return preState;
             else if (typeof val === "object" && Object.keys(val).length === 0) return preState;
@@ -88,6 +107,7 @@ export class LeeContent extends Component {
         if (post.mode === MODE_EDIT) {
             ele = (<PostForm
                 title={post.title}
+                key={index}
                 fullTxt={post.fullTxt}
                 idx={index}
                 isNew={post.isNew && post.mode === MODE_EDIT}
@@ -96,8 +116,10 @@ export class LeeContent extends Component {
         } else {
             ele = (<PostView
                 key={index}
-                title={post.title}
-                fullTxt={post.fullTxt}
+                idx={index}
+                post={post}
+                deletePost={this.deletePost}
+                editPost={this.editPost}
             />)
         }
         return <Row key={index} style={{marginBottom:50}}>

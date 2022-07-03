@@ -1,8 +1,8 @@
 import {Component} from "react";
 import {Input, message} from 'antd';
 import BraftEditor from 'braft-editor'
-import {MODE_EDIT, MODE_VIEW} from "../consts";
-
+import {MODE_VIEW} from "../consts";
+import {nowStr} from "../util";
 // 引入编辑器样式
 import 'braft-editor/dist/index.css'
 import {CheckOutlined, CloseOutlined} from "@ant-design/icons";
@@ -34,8 +34,6 @@ export class PostForm extends Component {
         this.setState({title: e.target.value})
     }
     handleSubmit = () => {
-        console.log(this.state)
-        console.log(this.title)
         if (this.state.isSubmitting) {
             // 避免重复提交
             message.error("正在提交中，请稍等...")
@@ -48,7 +46,19 @@ export class PostForm extends Component {
         }
         const {handleForm, idx} = this.props
         this.setState({isSubmitting: true});
-        handleForm(idx, null, {title, fullTxt: editor.toHTML(), isNew: false, mode: MODE_VIEW})
+        const now = nowStr();
+        const data = {
+            title,
+            fullTxt: editor.toHTML(),
+            isNew: false,
+            updateTime: now,
+            mode: MODE_VIEW
+        }
+        if (this.props.isNew){
+            data["createTime"] = now;
+        }
+        handleForm(idx, null, data)
+        console.log(data)
         this.setState({isSubmitting: false});
     }
     handleCancel = () => {
@@ -83,8 +93,8 @@ export class PostForm extends Component {
             )
         }
         actions.push((
-            <div className="bg-box left" key="left">
-                <div className="action" onClick={this.handleSubmit}>
+            <div className="bg-box left" key="left"  onClick={this.handleSubmit}>
+                <div className="action">
                     <CheckOutlined className="check-icon"/>
                     <span className="txt">{opName}</span>
                 </div>
