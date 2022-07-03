@@ -1,9 +1,9 @@
-import {Component} from "react";
+import {PureComponent} from "react";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import PropTypes from 'prop-types';
 
 // 文章， 用于显示
-export class PostView extends Component {
+export class PostView extends PureComponent {
 
     renderHeader() {
         // 渲染文章标题

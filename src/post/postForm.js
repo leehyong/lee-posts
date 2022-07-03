@@ -1,4 +1,4 @@
-import {Component} from "react";
+import {PureComponent} from "react";
 import {Input, message} from 'antd';
 import BraftEditor from 'braft-editor'
 import {MODE_VIEW} from "../consts";
@@ -20,7 +20,7 @@ const CONTROLS = [
 const createEditorState = (content) => BraftEditor.createEditorState(content)
 
 // 文章表单， 用于编辑
-export class PostForm extends Component {
+export class PostForm extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
