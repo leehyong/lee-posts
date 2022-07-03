@@ -21,21 +21,33 @@ const CONTROLS = [
 export class PostForm extends Component {
     constructor(props) {
         super(props);
-        // this.editor =
         this.state = {
-            title: (this.props.title || "").slice(0),
-            editor: BraftEditor.createEditorState(this.props.fullTxt),
+            title: this.props.title || "",
+            editor: this.createEditorState(this.props.fullTxt),
             isSubmitting: false,
             isCancelling: false
         };
     }
 
+    createEditorState = (content) => BraftEditor.createEditorState(content)
+
     handleEditorChange = (editorState) => {
-        this.setState({ editor:editorState})
+        this.setState({editor: editorState})
     }
     handleTitleChange = (e) => {
         this.setState({title: e.target.value})
     }
+    clearData = () => {
+        // 清空富文本编辑器的内容
+        new BraftEditor(this.state.editor).clearEditorContent()
+        this.setState({
+            title: "",
+            editor: this.createEditorState(null),
+            isSubmitting: false,
+            isCancelling: false
+        })
+    }
+
     handleSubmit = () => {
         if (this.state.isSubmitting) {
             // 避免重复提交
@@ -57,10 +69,10 @@ export class PostForm extends Component {
             updateTime: now,
             mode: MODE_VIEW
         }
-        if (this.props.isNew){
+        if (this.props.isNew) {
             data["createTime"] = now;
         }
-        handleForm(idx, null, data)
+        handleForm(idx, null, data, this.clearData)
         this.setState({isSubmitting: false});
     }
     handleCancel = () => {
@@ -95,7 +107,7 @@ export class PostForm extends Component {
             )
         }
         actions.push((
-            <div className="bg-box left" key="left"  onClick={this.handleSubmit}>
+            <div className="bg-box left" key="left" onClick={this.handleSubmit}>
                 <div className="action">
                     <CheckOutlined className="check-icon"/>
                     <span className="txt">{opName}</span>

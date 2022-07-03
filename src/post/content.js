@@ -84,7 +84,7 @@ export class LeeContent extends Component {
     }
 
     // 修改单个文章的信息
-    handleFormAction(index, prop, val) {
+    handleFormAction(index, prop, val, clear) {
         this.setState(preState => {
             if (index >= preState.posts.length) return preState;
             // 不用 !val 判定， 避免val 为false的情况
@@ -96,6 +96,12 @@ export class LeeContent extends Component {
             } else {
                 // 修改具体的某个属性
                 preState.posts[index][prop] = val;
+            }
+            // 编辑完后，如果没有新的默认文章，则需要创建一个
+            if (index === 0 && preState.posts[index].isNew === false){
+                preState.posts.unshift(this.defaultPost());
+                // 需要清空表单数据
+                clear && clear();
             }
             return preState;
         })
