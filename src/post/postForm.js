@@ -6,6 +6,7 @@ import {nowStr} from "../util";
 // 引入编辑器样式
 import 'braft-editor/dist/index.css'
 import {CheckOutlined, CloseOutlined} from "@ant-design/icons";
+import PropTypes from 'prop-types';
 
 // 富文本编辑: https://www.yuque.com/braft-editor/be/gz44tn#bo49ph
 const CONTROLS = [
@@ -146,4 +147,11 @@ export class PostForm extends Component {
 
         )
     }
+}
+
+PostForm.propTypes = {
+    title: PropTypes.string.isRequired,
+    fullTxt: PropTypes.string.isRequired,
+    handleForm: PropTypes.func.isRequired,
+    cancelPost: PropTypes.func.isRequired,
 }
